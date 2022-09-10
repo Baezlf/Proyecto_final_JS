@@ -35,10 +35,10 @@ const preciosMarca = [
 ];
 
 const manga = [
-    new Manga(1, "ivrea", "tanko", "Shaman king", "Hiroyuki Takei", 17, 20, 1550),
-    new Manga(2, "ivrea", "tanko", "Chainsaw man", "Tatsuki Fujimoto", 11, 20, 750),
-    new Manga(3, "ivrea", "tanko", "Berserk", "Kentaro Miura", 41, 20, 1100),
-    new Manga(4, "ivrea", "tanko", "Mushihime", "Masaya Hokazono", 3, 20, 850)
+    new Manga(1, "ivrea", "b6 doble", "Shaman king", "Hiroyuki Takei", 17, 20, 1700),
+    new Manga(2, "ivrea", "tanko", "Chainsaw man", "Tatsuki Fujimoto", 11, 20, 850),
+    new Manga(3, "panini", "tanko", "Berserk", "Kentaro Miura", 41, 20, 1100),
+    new Manga(4, "ivrea", "b6", "Mushihime", "Masaya Hokazono", 3, 20, 850)
 ];
 
 
@@ -76,7 +76,7 @@ let cargarDatos = () => {
 
 //visualizar el stock
 let verStock = () => {
-    let titulos = manga.map(item => item.precio).join("\n")//.map(item => item.stock).join("\n");
+    let titulos = manga.map(item => item.titulo).join("\n")//.map(item => item.stock).join("\n");
     alert(titulos);
 };
 
