@@ -1,11 +1,12 @@
 class Manga {
-    constructor(id, marca, formato, titulo, autor, tomos, stock, precio){
+    constructor(id, marca, formato, titulo, autor, tomo, tomosTotales, stock, precio){
         this.id = id;
         this.marca = marca;
         this.formato = formato;
         this.titulo = titulo;
         this.autor = autor;
-        this.tomos = tomos;
+        this.tomo = tomo;
+        this.tomosTotales = tomosTotales;
         this.stock = stock;
         this.precio = precio;
     }
@@ -15,32 +16,25 @@ class Manga {
 }
 
 class Precios {
-    constructor(marca, formato, precio){
-        this.marca = marca;
-        this.formato = formato;
+    constructor(marcaFormato, precio){
+        this.marcaFormato = marcaFormato;
         this.precio = precio;
     }
 };
 
 const preciosMarca = [
-    new Precios("ivrea", "tanko", 750),
-    new Precios("ivrea", "b6", 850),
-    new Precios("ivrea", "b6 doble", 1700),
-    new Precios("ivrea", "a5", 2000),
-    new Precios("panini", "tanko", 1100),
-    new Precios("panini", "b6 doble", 1700),
-    new Precios("panini", "a5", 1900),
-    new Precios("ovni press", "b6", 990),
-    new Precios("ovni press", "b6 doble", 1750)
+    new Precios("ivrea tanko", 750),
+    new Precios("ivrea b6", 850),
+    new Precios("ivrea b6 doble", 1700),
+    new Precios("ivrea a5", 2000),
+    new Precios("panini tanko", 1100),
+    new Precios("panini b6 doble", 1700),
+    new Precios("panini a5", 1900),
+    new Precios("ovni press b6", 990),
+    new Precios("ovni press b6 doble", 1750)
 ];
 
-const manga = [
-    new Manga(1, "ivrea", "b6 doble", "Shaman king", "Hiroyuki Takei", 17, 20, 1700),
-    new Manga(2, "ivrea", "tanko", "Chainsaw man", "Tatsuki Fujimoto", 11, 20, 850),
-    new Manga(3, "panini", "tanko", "Berserk", "Kentaro Miura", 41, 20, 1100),
-    new Manga(4, "ivrea", "b6", "Mushihime", "Masaya Hokazono", 3, 20, 850)
-];
-
+const manga = [];
 
 //validar la opcion usuario/admin.
 let validar = (a) => {while(a === ""){
@@ -54,30 +48,41 @@ let validar = (a) => {while(a === ""){
 
 //carga de datos
 let cargarDatos = () => {
-    let num = manga.length;
     manga.push(
         new Manga(
-            num++,
+            parseInt(prompt(`Indique el id:`)),
             prompt(`Indique la marca:`).toLowerCase(), 
             prompt(`Indique el formato:`).toLowerCase(),
             prompt(`Indique el titulo:`),
             prompt(`Indique el autor:`),
-            parseInt(prompt(`Indique la cantidad de tomos:`)),
+            parseInt(prompt(`Indique el tomo:`)),
+            parseInt(prompt(`Indique la cantidad de tomos totales:`)),
             parseInt(prompt(`Idique el stock:`)),
             0
         )
     )
-    if(manga.marca === preciosMarca.marca){
-        if(manga.formato === preciosMarca.formato){
-            manga.precio = preciosMarca.precio;
-        }
+    let pos = manga.length - 1;
+    let marcaTipo = `${manga[pos].marca} ${manga[pos].formato}`
+    let parametro = false;
+    let i = 0;
+    while(parametro != true) {
+        if (preciosMarca[i].marcaFormato === marcaTipo){
+            parametro = true;
+        } else if(i === preciosMarca.length){
+            parametro = true;
+        } else {i++}
     }
+    manga[pos].precio = preciosMarca[i].precio;
 };
 
 //visualizar el stock
+let stock = (manga) => {
+    return `"${manga.titulo}" tomo ${manga.tomo} : ${manga.stock} $${manga.precio}`
+}
+
 let verStock = () => {
-    let titulos = manga.map(item => item.titulo).join("\n")//.map(item => item.stock).join("\n");
-    alert(titulos);
+    let stockDisponible = manga.map(stock);
+    alert(stockDisponible);
 };
 
 //ver las ventas
