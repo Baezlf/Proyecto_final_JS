@@ -57,14 +57,15 @@ const listaVentas = document.getElementById("ver-ventas");
 const renovarStock = document.getElementById("renovar-stock");
 const cargarStock = document.getElementById("cargar-stock");
 
-localStorage.setItem("mangasGuardados", JSON.stringify(manga))//comentar despues de cargar un producto nuevo para que no se sobreescriba
+//localStorage.setItem("mangasGuardados", JSON.stringify(manga))//comentar despues de cargar un producto nuevo para que no se sobreescriba
 
 
 //mostrar productos en la pagina
 let mangasGuardados = JSON.parse(localStorage.getItem("mangasGuardados"));
 mangasGuardados.forEach(producto => {
+    let {id, titulo, autor, marca, formato, precio, stock} = producto;
     const div = document.createElement(`div`);  
-    let agregar = `<button id="agregar-prod", onclick="agregarProducto(${producto.id})">Agregar al carrito</button>
+    let agregar = `<button id="agregar-prod", onclick="agregarProducto(${id})">Agregar al carrito</button>
     </div>
     `;
     let sinStock = `<p><b>Sin Stock</b></p>
@@ -72,12 +73,12 @@ mangasGuardados.forEach(producto => {
     `;
     let divHTML = `
         <div class="mostrar-productos">
-            <h3 class="titulo-manga">"${producto.titulo}"</h3>
-            <p>Autor: ${producto.autor}<br>
-            Editorial: ${producto.marca} <br>
-            Formato: ${producto.formato}<br>
-            Precio: <b>$${producto.precio}</b></p>`;
-    producto.stock > 0 ? divHTML +=agregar : divHTML +=sinStock;
+            <h3 class="titulo-manga">"${titulo}"</h3>
+            <p>Autor: ${autor}<br>
+            Editorial: ${marca} <br>
+            Formato: ${formato}<br>
+            Precio: <b>$${precio}</b></p>`;
+    stock > 0 ? divHTML +=agregar : divHTML +=sinStock;
     div.innerHTML +=divHTML;
     contenedor.append(div);
 });
@@ -89,13 +90,11 @@ let guardarCarrito = () => {
 
 let eliminarProdCarrito = (id) => {
     carrito[id].cantidad--;
-    if(carrito[id].cantidad === 0){
-        carrito.splice(id, 1);
-    }
+    carrito[id].cantidad === 0 && carrito.splice(id, 1);
     guardarCarrito();
     renderizarCarrito();
     calcularTotal();
-}
+};
 
 let vaciarCarrito = () => {
     carrito = [];
@@ -109,11 +108,12 @@ vaciar.addEventListener("click", vaciarCarrito);
 let renderizarCarrito = () =>{
     let carritoHTML = "";
     carrito.forEach((prod, id) => {
+        let {titulo, precio, cantidad} = prod;
         carritoHTML += `
         <div class="prod-en-carrito">
-            <h3>"${prod.titulo}"</h3>
-            <p>Precio: $${prod.precio}<br>
-            Cantidad: ${prod.cantidad}<br>
+            <h3>"${titulo}"</h3>
+            <p>Precio: $${precio}<br>
+            Cantidad: ${cantidad}<br>
             <button onclick="eliminarProdCarrito(${id})">Eliminar</button><br><br>
         </div>            
         `
@@ -124,10 +124,11 @@ let renderizarCarrito = () =>{
 let calcularTotal = () => {
     let total = 0;
     carrito.forEach(prod => {
-        total += prod.precio * prod.cantidad;
+        let {precio, cantidad} = prod;
+        total += precio * cantidad;
     });
-    totalCompra.innerHTML = `<b>$${total}</b>`
-}
+    totalCompra.innerHTML = `<b>$${total}</b>`;
+};
 
 //Buscar productos cargados anteriormente
 let carritoStorage = JSON.parse(localStorage.getItem("carritoStorage"));
@@ -167,16 +168,12 @@ let realizarCompra = () => {
         console.log(mangasGuardados[pos])
         mangasGuardados[pos].stock -= prod.cantidad;
         mangasGuardados[pos].cantidadVendida ? mangasGuardados[pos].cantidadVendida += prod.cantidad : mangasGuardados[pos].cantidadVendida = prod.cantidad;
-        /*if (mangasGuardados[pos].cantidadVendida){
-            mangasGuardados[pos].cantidadVendida += prod.cantidad;
-        } else {
-            mangasGuardados[pos].cantidadVendida = prod.cantidad;
-        }*/
     }
     guardarMangasLS();
     vaciarCarrito();
     alert(`Gracias por su compra!`)
-}
+    location.href = location.href;
+};
 
 comprar.addEventListener("click", realizarCompra)
 
