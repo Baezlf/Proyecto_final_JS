@@ -1,0 +1,94 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.cabecera{
+    width: 80%;
+    margin: 0px auto;
+    text-align: center;
+    align-self: center;
+}
+
+#nombre-tienda{
+    height: 50px;
+}
+
+button{
+    margin-left: 50%;
+    transform: translateX(-50%);
+    padding: 3px;
+    margin-bottom: 5px;
+    margin-top: 5px;
+}
+
+#pag-principal{
+    width: 80%;
+    margin: 0px auto;
+    margin-top: 15px;
+}
+
+.carrito-compras{
+    width: 20%;
+    float: left;
+    padding: 5px;
+    border-radius: 10px;
+    border-style: groove;
+}
+
+.contenedor-mangas{
+    width: 80%;
+    float: left;
+}
+
+.mostrar-productos{
+    float: left;
+    margin: 5px;
+    padding: 5px;
+    width: 200px;
+    height: 150px;
+    box-shadow: 0px 0px 10px rgba(0,0,0,0.6);
+}
+
+.titulo-manga{
+    text-align: center;
+}
+
+.lista{
+    padding: 0%;
+}
+
+#formulario-carga{
+    width: 250px;
+	height: 170px;
+    margin: auto;
+    padding: 5px;
+	box-shadow: 1px 7px 25px rgba(0,0,0,0.6);
+    font-style: italic;
+}
+
+#total{
+    float: right;
+}
+
+.fila{
+    text-align: right;
+}
+
+#tabla{
+    margin-left: 50%;
+    transform: translateX(-50%);
+    padding: 5px;
+	box-shadow: 1px 7px 25px rgba(0,0,0,0.6);
+}
+
+#formulario-carga-stock{
+    width: 380px;
+	height: 60px;
+    margin: auto;
+    padding: 5px;
+	box-shadow: 1px 7px 25px rgba(0,0,0,0.6);
+    font-style: italic;
+}
