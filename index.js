@@ -112,8 +112,8 @@ let renderizarCarrito = () =>{
         carritoHTML += `
         <div class="prod-en-carrito">
             <h3>"${titulo}"</h3>
-            <p>Precio: $${precio}<br>
             Cantidad: ${cantidad}<br>
+            <p>Precio: <span id="total">$${precio}</span></p><br>
             <button onclick="eliminarProdCarrito(${id})">Eliminar</button><br><br>
         </div>            
         `
@@ -171,8 +171,13 @@ let realizarCompra = () => {
     }
     guardarMangasLS();
     vaciarCarrito();
-    alert(`Gracias por su compra!`)
-    location.href = location.href;
+    Swal.fire({
+        position: 'center',
+        icon: 'success',
+        title: 'Gracias por su compra!',
+        showConfirmButton: false,
+        timer: 1500
+      });
 };
 
 comprar.addEventListener("click", realizarCompra)
@@ -302,8 +307,6 @@ cargarStock.addEventListener("submit", (e) =>{
     let stock = parseInt(document.getElementById("stock").value);
     let titulo = document.getElementById("titulo").value;
     let index = mangasGuardados.findIndex(item => item.titulo === titulo);
-    console.log(mangasGuardados[index]);
-    
     mangasGuardados[index].stock += stock;
     guardarMangasLS();
     cargarStock.innerHTML = "";

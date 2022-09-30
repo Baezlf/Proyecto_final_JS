@@ -22,25 +22,28 @@ button{
     padding: 3px;
     margin-bottom: 5px;
     margin-top: 5px;
+    border-radius: 3px;
 }
 
 #pag-principal{
-    width: 80%;
+    width: 90%;
     margin: 0px auto;
     margin-top: 15px;
 }
 
 .carrito-compras{
-    width: 20%;
-    float: left;
+    width: 25%;
+    float: right;
     padding: 5px;
     border-radius: 10px;
     border-style: groove;
 }
 
 .contenedor-mangas{
-    width: 80%;
+    display: flex;
+    width: 75%;
     float: left;
+    flex-flow: row wrap;
 }
 
 .mostrar-productos{
