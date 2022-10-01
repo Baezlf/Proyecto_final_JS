@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css">
     <link rel="stylesheet" href="index.css">
     <title>Document</title>
 </head>
@@ -12,24 +13,28 @@
         <h1>Tienda de Mangas</h1>
     </header>
     <section id="pag-principal">
+        <div class="div-botones">
+            <button class="boton-admin" id="mangas-vendidos">Ver mangas vendidos</button>
+            <button class="boton-admin" id="renovar-stock">Renovar stock</button>
+            <button class="boton-admin" id="agregar-manga">Agregar nuevo manga</button>
+        </div>
+        <div>            
+            <div id="ver-ventas" class="lista-ventas"></div>
+            <div id="cargar-stock" class="formulario-stock"></div>
+            <div id="formulario" class="formulario-carga"></div>
+        </div>
         <div id="contenedor" class="contenedor-mangas"></div>
-        <aside id="div-carrito" class="carrito-compras">
-            <h2 class="cabecera">Carrito</h2>
-            <ul id="carrito" class="lista"></ul>
-            <hr />
-            <p class="total">Total: <span id="total"></span></p>
-            <button id="boton-vaciar" class="boton">Vaciar carrito</button>
-            <button id="realizar-compra" class="boton">Realizar compra</button>
-        </aside>
+        <div class="contenedor-carrito">            
+            <div id="div-carrito" class="carrito-compras">                
+                <h2 class="carrito-titulo"><i class="bi bi-cart"></i> Carrito</h2>
+                <ul id="carrito" class="lista"></ul>
+                <hr />
+                <p class="total">Total: <span id="total"></span></p>
+                <button id="boton-vaciar" class="boton">Vaciar carrito <i class="bi bi-cart-x"></i></button>
+                <button id="realizar-compra" class="boton">Comprar <i class="bi bi-cart-check"></i></button>
+            </div>
+        </div>
     </section>
-    <div>
-        <button id="mangas-vendidos">Ver mangas vendidos</button>
-        <div id="ver-ventas" class="lista-ventas"></div>
-        <button id="renovar-stock">Renovar stock</button>
-        <div id="cargar-stock" class="formulario-stock"></div>
-        <button id="agregar-manga">Agregar nuevo manga</button>
-        <div id="formulario" class="formulario-carga"></div>
-    </div>
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="./index.js"></script>
 </body>

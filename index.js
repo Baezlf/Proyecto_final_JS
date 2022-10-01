@@ -1,5 +1,5 @@
 class Manga {
-    constructor(id, marca, formato, titulo, autor, stock, precio){
+    constructor(id, marca, formato, titulo, autor, stock, precio, img){
         this.id = id;
         this.marca = marca;
         this.formato = formato;
@@ -7,6 +7,7 @@ class Manga {
         this.autor = autor;
         this.stock = stock;
         this.precio = precio;
+        this.img = img;
     }
     Venta(cantidad){
         if(this.stock > 0){this.stock -= cantidad;}
@@ -16,11 +17,11 @@ class Manga {
 }
 
 const manga = [
-    new Manga(1, "Ivrea", "b6 doble", "Shaman king", "Hiroyuki Takei", 10, 1700),
-    new Manga(2, "Ivrea", "tanko", "Chainsaw man", "Tatsuki Fujimoto", 10, 750),
-    new Manga(3, "Panini", "tanko", "Berserk", "Kentaro Miura", 10, 1100),
-    new Manga(4, "Ivrea", "b6", "Mushihime", "Masaya Hokazono", 10, 850),
-    new Manga(5, "Ivrea", "b6", "Alice in Borderland", "Haro Aso", 10, 1700)
+    new Manga(1, "Ivrea", "b6 doble", "Shaman king", "Hiroyuki Takei", 10, 1700, "./imagenes/Shaman king.jpg"),
+    new Manga(2, "Ivrea", "tanko", "Chainsaw man", "Tatsuki Fujimoto", 10, 750, "./imagenes/Chainsaw man.jpg"),
+    new Manga(3, "Panini", "tanko", "Berserk", "Kentaro Miura", 10, 1100, "./imagenes/Berserk.jpg"),
+    new Manga(4, "Ivrea", "b6", "Mushihime", "Masaya Hokazono", 10, 850, "./imagenes/Mushihime.jpg"),
+    new Manga(5, "Ivrea", "b6", "Alice in Borderland", "Haro Aso", 10, 1700, "./imagenes/Alice in bordferland.jpeg")
 ];
 
 class Precios {
@@ -63,9 +64,9 @@ const cargarStock = document.getElementById("cargar-stock");
 //mostrar productos en la pagina
 let mangasGuardados = JSON.parse(localStorage.getItem("mangasGuardados"));
 mangasGuardados.forEach(producto => {
-    let {id, titulo, autor, marca, formato, precio, stock} = producto;
+    let {id, titulo, autor, marca, formato, precio, stock, img} = producto;
     const div = document.createElement(`div`);  
-    let agregar = `<button id="agregar-prod", onclick="agregarProducto(${id})">Agregar al carrito</button>
+    let agregar = `<button class="boton" id="agregar-prod", onclick="agregarProducto(${id})"><div id="icono"><i class="bi bi-cart-plus"></i></div> <div>Agregar al carrito</div></button>
     </div>
     `;
     let sinStock = `<p><b>Sin Stock</b></p>
@@ -73,6 +74,9 @@ mangasGuardados.forEach(producto => {
     `;
     let divHTML = `
         <div class="mostrar-productos">
+            <div class="div-imagen">
+            <img class="imagen-manga" src="${img}">
+            </div>
             <h3 class="titulo-manga">"${titulo}"</h3>
             <p>Autor: ${autor}<br>
             Editorial: ${marca} <br>
@@ -103,7 +107,31 @@ let vaciarCarrito = () => {
     calcularTotal();
 }
 
-vaciar.addEventListener("click", vaciarCarrito);
+let vaciarCarritoConfirmar = () => {
+    Swal.fire({
+        title: 'Vaciar el Carrito',
+        text: "Está seguro que desea vaciar el carrito?",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Vaciar!'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          Swal.fire(
+            'Carrito vacio',
+            'Los productos se borraron correctamente',
+            'success'
+          )
+          carrito = [];
+          guardarCarrito();
+          renderizarCarrito();
+          calcularTotal();
+        }
+      })
+}
+
+vaciar.addEventListener("click", vaciarCarritoConfirmar);
 
 let renderizarCarrito = () =>{
     let carritoHTML = "";
@@ -114,7 +142,7 @@ let renderizarCarrito = () =>{
             <h3>"${titulo}"</h3>
             Cantidad: ${cantidad}<br>
             <p>Precio: <span id="total">$${precio}</span></p><br>
-            <button onclick="eliminarProdCarrito(${id})">Eliminar</button><br><br>
+            <button class="boton" onclick="eliminarProdCarrito(${id})">Eliminar<i class="bi bi-cart-dash"></i></button><br><br>
         </div>            
         `
     });
@@ -141,11 +169,26 @@ calcularTotal();
 
 
 //argregar productos al carrito de compras
+let mensajeError = (titulo) => {
+    Swal.fire({
+        icon: 'error',
+        title: 'Limite de stock',
+        text: `Su pedido supera la cantidad disponible de: "${titulo}"`,
+      })
+}
+
 const agregarProducto = (id) => {
+    Swal.fire({
+        position: 'top-end',
+        icon: 'success',
+        title: 'Producto agregado al carrito',
+        showConfirmButton: false,
+        timer: 1500
+      })
     let producto = mangasGuardados.find((producto) => producto.id === id);
     let productoEnCarrito = carrito.find(producto => producto.id === id);
     if (productoEnCarrito){
-        producto.cantidad < mangasGuardados[id-1].stock ? producto.cantidad++ : alert(`Su pedido supera la cantidad disponible de Stock del manga: "${producto.titulo}"`);
+        producto.cantidad < mangasGuardados[id-1].stock ? producto.cantidad++ : mensajeError(producto.titulo);
     } else {
         producto.cantidad = 1
         carrito.push(producto);
@@ -162,6 +205,22 @@ let guardarMangasLS = () => {
 }
 
 let realizarCompra = () => {
+    if(carrito.length !== 0){
+        Swal.fire({
+            position: 'center',
+            icon: 'success',
+            title: 'Gracias por su compra!',
+            showConfirmButton: false,
+            timer: 1500
+          });
+    } else {
+        Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: 'El carritio está vacío!',
+          })
+    }
+    
     for(const prod of carrito){
         console.log(prod);
         let pos = prod.id - 1;
@@ -171,18 +230,15 @@ let realizarCompra = () => {
     }
     guardarMangasLS();
     vaciarCarrito();
-    Swal.fire({
-        position: 'center',
-        icon: 'success',
-        title: 'Gracias por su compra!',
-        showConfirmButton: false,
-        timer: 1500
-      });
 };
 
 comprar.addEventListener("click", realizarCompra)
 
 //Cargar un producto nuevo
+let cerrarCargarManga = () => {
+    formulario.innerHTML = "";
+}
+
 let nuevoManga = () =>{
     const div = document.createElement(`div`);
     let cargarHTML = `
@@ -206,7 +262,8 @@ let nuevoManga = () =>{
         <input id="autor" name="autor" type="text" required><br>
         <label for="stock">Stock:</label>
         <input id="stock" name="stock" type="number" min="0" required><br>
-        <button type="submit">Cargar</button>
+        <button class="boton" type="submit">Cargar</button>
+        <button class="boton" id="cerrar" onclick="cerrarCargarManga()">Cerrar</button>
     </form>
     
     `
@@ -218,7 +275,7 @@ agregarNuevoManga.addEventListener("click", nuevoManga);
 
 let agregarAlListado = (id) => {
     const div = document.createElement(`div`);
-    let agregar = `<button id="agregar-prod", onclick="agregarProducto(${mangasGuardados[id].id})">Agregar al carrito</button>
+    let agregar = `<button class="boton" id="agregar-prod", onclick="agregarProducto(${mangasGuardados[id].id})">Agregar al carrito</button>
     </div>
     `;
     let sinStock = `<b>Sin Stock</b></p>
@@ -270,8 +327,6 @@ let cerrarListaVentas = () => {
     listaVentas.innerHTML = "";
 }
 
-listaVentas.addEventListener("click", cerrarListaVentas);
-
 let verVentas = () => {
     const table = document.createElement(`table`);
     let ventasTotales = 0;
@@ -293,7 +348,7 @@ let verVentas = () => {
     }
     tablaHTML += `<tr><td>Cantidad Total</td><td class="fila">${ventasTotales}</td><td class="fila">$${recaudadoFinal}</td></tr>
     </table>`
-    let botonCerrar = `<button id="cerrar">Cerrar</button>`;
+    let botonCerrar = `<button class="boton" id="cerrar" onclick="cerrarListaVentas()">Cerrar</button>`;
     tablaHTML += botonCerrar;
     listaVentas.append(table);
     listaVentas.innerHTML = tablaHTML;
@@ -312,6 +367,10 @@ cargarStock.addEventListener("submit", (e) =>{
     cargarStock.innerHTML = "";
 });
 
+let cerrarRenovarStock = () => {
+    cargarStock.innerHTML = "";
+}
+
 let agregarStock = () => {
     const div = document.createElement(`div`);
     let stockHTML = `
@@ -324,7 +383,10 @@ let agregarStock = () => {
         }
         stockHTML +=`</select>
         <input id="stock" name="stock" type="number" min="0" required>
-        <button type="submit">Cargar</button>
+        <div class="div-botones">
+        <button class="boton-admin" type="submit">Cargar</button>
+        <button class="boton-admin" id="cerrar" onclick="cerrarRenovarStock()">Cerrar</button>
+        </div>
     </form>`;
     cargarStock.append(div);
     cargarStock.innerHTML = stockHTML;

@@ -5,8 +5,17 @@
     font-family: Arial, Helvetica, sans-serif;
 }
 
+body{
+    background-image: url(./imagenes/Fondo\ twitch.jpg);
+    background-repeat: no-repeat;
+    background-position: center;
+    background-attachment: fixed;
+    background-size: cover;
+}
+
 .cabecera{
-    width: 80%;
+    background-color: aliceblue;
+    width: 100%;
     margin: 0px auto;
     text-align: center;
     align-self: center;
@@ -16,13 +25,24 @@
     height: 50px;
 }
 
-button{
+.boton-admin{
+    display: flex;
+    padding: 5px;
+    margin: 5px;
+    border-radius: 3px;
+    justify-content: space-around;
+}
+
+.boton{
     margin-left: 50%;
     transform: translateX(-50%);
-    padding: 3px;
+    display: flex;
+    width: 80%;
+    padding: 5px;
     margin-bottom: 5px;
     margin-top: 5px;
     border-radius: 3px;
+    justify-content: space-around;
 }
 
 #pag-principal{
@@ -31,9 +51,21 @@ button{
     margin-top: 15px;
 }
 
-.carrito-compras{
+.contenedor-carrito{
     width: 25%;
     float: right;
+}
+
+.carrito-titulo{
+    text-shadow: 0px 0px 3px rgb(255, 255, 255);
+    width: 100%;
+    margin: 0px auto;
+    text-align: center;
+}
+
+.carrito-compras{
+    width: 100%;
+    background-color: rgb(22, 90, 218);
     padding: 5px;
     border-radius: 10px;
     border-style: groove;
@@ -44,26 +76,48 @@ button{
     width: 75%;
     float: left;
     flex-flow: row wrap;
+    justify-content: space-around;
+}
+
+.div-imagen{
+    margin: auto;
+    width: 90%;
+    height: 300px;
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: center;
+    align-items: center;    
+}
+
+.imagen-manga{
+    width: 100%;
+    height: auto;
+    
 }
 
 .mostrar-productos{
+    background-color: aliceblue;
+    background-position: center;
+    height: 100%;
     float: left;
     margin: 5px;
     padding: 5px;
     width: 200px;
-    height: 150px;
+    height: 450px;
     box-shadow: 0px 0px 10px rgba(0,0,0,0.6);
 }
+
 
 .titulo-manga{
     text-align: center;
 }
 
 .lista{
-    padding: 0%;
+    padding: 0;
 }
 
 #formulario-carga{
+    background-color: aliceblue;
     width: 250px;
 	height: 170px;
     margin: auto;
@@ -81,6 +135,7 @@ button{
 }
 
 #tabla{
+    background-color: aliceblue;
     margin-left: 50%;
     transform: translateX(-50%);
     padding: 5px;
@@ -88,10 +143,17 @@ button{
 }
 
 #formulario-carga-stock{
+    background-color: aliceblue;
     width: 380px;
 	height: 60px;
     margin: auto;
     padding: 5px;
 	box-shadow: 1px 7px 25px rgba(0,0,0,0.6);
     font-style: italic;
+}
+
+.div-botones{
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: center; 
 }
